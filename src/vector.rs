@@ -8,12 +8,12 @@ pub struct Vector<const N: usize> {
 #[macro_export]
 macro_rules! v {
     ($($x:expr),+ $(,)?) => {{
-        $crate::vector::Vector::from([$($x),*])
+        $crate::vector::Vector::new([$($x),*])
     }};
 }
 
 impl<const N: usize> Vector<N> {
-    pub const fn from(values: [f32; N]) -> Self {
+    pub const fn new(values: [f32; N]) -> Self {
         Self { values }
     }
 
@@ -130,7 +130,7 @@ mod tests {
 
     #[test]
     fn test_constructors() {
-        assert_eq!(Vector::from([1., 2., 3.14, 4.2]), v![1., 2., 3.14, 4.2]);
+        assert_eq!(Vector::new([1., 2., 3.14, 4.2]), v![1., 2., 3.14, 4.2]);
         assert_eq!(Vector::<3>::zeros().values, [0., 0., 0.]);
         assert_eq!(Vector::<3>::ones(), Vector::full(1.));
     }
