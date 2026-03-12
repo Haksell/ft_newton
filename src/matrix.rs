@@ -92,10 +92,10 @@ macro_rules! impl_matrix_matrix {
     };
 }
 
-impl_matrix_matrix!(Matrix< H, W>, Matrix< H, W>);
-impl_matrix_matrix!(Matrix< H, W>, &Matrix< H, W>);
-impl_matrix_matrix!(&Matrix< H, W>, Matrix< H, W>);
-impl_matrix_matrix!(&Matrix< H, W>, &Matrix< H, W>);
+impl_matrix_matrix!(Matrix<H, W>, Matrix<H, W>);
+impl_matrix_matrix!(Matrix<H, W>, &Matrix<H, W>);
+impl_matrix_matrix!(&Matrix<H, W>, Matrix<H, W>);
+impl_matrix_matrix!(&Matrix<H, W>, &Matrix<H, W>);
 
 macro_rules! impl_matrix_scalar {
     ($matrix:ty) => {
@@ -121,8 +121,8 @@ macro_rules! impl_matrix_scalar {
     };
 }
 
-impl_matrix_scalar!(Matrix< H, W>);
-impl_matrix_scalar!(&Matrix< H, W>);
+impl_matrix_scalar!(Matrix<H, W>);
+impl_matrix_scalar!(&Matrix<H, W>);
 
 #[expect(clippy::float_cmp)]
 #[cfg(test)]
