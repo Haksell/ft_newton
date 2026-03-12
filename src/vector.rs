@@ -89,29 +89,29 @@ impl_vector_vector!(&Vector<N>, Vector<N>);
 impl_vector_vector!(&Vector<N>, &Vector<N>);
 
 macro_rules! impl_vector_scalar {
-    ($vector:ty, $field:ty) => {
-        impl<const N: usize> std::ops::Mul<$field> for $vector {
+    ($vector:ty) => {
+        impl<const N: usize> std::ops::Mul<f32> for $vector {
             type Output = Vector<N>;
 
-            fn mul(self, scalar: $field) -> Self::Output {
+            fn mul(self, scalar: f32) -> Self::Output {
                 Vector {
                     values: std::array::from_fn(|i| self.values[i] * scalar),
                 }
             }
         }
 
-        impl<const N: usize> std::ops::Div<$field> for $vector {
+        impl<const N: usize> std::ops::Div<f32> for $vector {
             type Output = Vector<N>;
 
-            fn div(self, scalar: $field) -> Self::Output {
+            fn div(self, scalar: f32) -> Self::Output {
                 self * (1.0 / scalar)
             }
         }
     };
 }
 
-impl_vector_scalar!(Vector<N>, f32);
-impl_vector_scalar!(&Vector<N>, f32);
+impl_vector_scalar!(Vector<N>);
+impl_vector_scalar!(&Vector<N>);
 
 impl Vector<3> {
     pub fn cross(&self, rhs: &Self) -> Self {

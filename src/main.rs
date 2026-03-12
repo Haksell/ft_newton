@@ -1,3 +1,4 @@
+mod matrix;
 mod vector;
 
 fn main() {
