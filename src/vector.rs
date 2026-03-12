@@ -116,10 +116,22 @@ impl_vector_scalar!(&Vector<N>);
 impl Vector<3> {
     pub fn cross(&self, rhs: &Self) -> Self {
         v![
-            self[1].mul_add(rhs[2], -(self[2] * rhs[1])),
-            self[2].mul_add(rhs[0], -(self[0] * rhs[2])),
-            self[0].mul_add(rhs[1], -(self[1] * rhs[0])),
+            self[1] * rhs[2] - self[2] * rhs[1],
+            self[2] * rhs[0] - self[0] * rhs[2],
+            self[0] * rhs[1] - self[1] * rhs[0],
         ]
+    }
+
+    pub const fn x(&self) -> f32 {
+        self.values[0]
+    }
+
+    pub const fn y(&self) -> f32 {
+        self.values[1]
+    }
+
+    pub const fn z(&self) -> f32 {
+        self.values[2]
     }
 }
 

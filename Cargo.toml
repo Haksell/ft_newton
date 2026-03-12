@@ -26,6 +26,9 @@ multiple_crate_versions = "allow"
 # correctness
 approx_constant = "allow"
 
+# nuresery
+suboptimal_flops = "allow"
+
 # pedantic
 should_panic_without_expect = "allow"
 
