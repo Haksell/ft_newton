@@ -2,7 +2,7 @@
 
 ## mandatory
 
-- [ ] a simple `make` command should be enough to compile the full project
+- [x] a simple `make` command should be enough to compile the full project
 - [ ] a scene where you use either a catapult or a trebuchet throwing some apples (projectiles) on some unstable composed structures
 - [ ] impact must produce a series of reaction that is physically correct and the system must go back to a stable state (no infinite bounce)
 - you will code at least 3 primitive colliders based on different geometries:
