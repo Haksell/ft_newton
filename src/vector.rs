@@ -34,7 +34,14 @@ impl<const N: usize> Vector<N> {
         N
     }
 
-    pub fn normalize(&self) -> Self {
+    pub fn normalize(&mut self) {
+        let inv_mag = 1.0 / self.magnitude();
+        for x in &mut self.values {
+            *x *= inv_mag;
+        }
+    }
+
+    pub fn normalized(&self) -> Self {
         self / self.magnitude()
     }
 
@@ -138,6 +145,8 @@ impl Vector<3> {
 #[expect(clippy::float_cmp)]
 #[cfg(test)]
 mod tests {
+    use std::f32::consts::FRAC_1_SQRT_2;
+
     use super::*;
 
     #[test]
@@ -218,6 +227,9 @@ mod tests {
 
     #[test]
     fn test_normalize() {
-        assert_eq!(v![3., -4., 0.].normalize(), v![0.6, -0.8, 0.0]);
+        let mut v = v![1., 1.];
+        v.normalize();
+        assert_eq!(v, v![FRAC_1_SQRT_2, FRAC_1_SQRT_2]);
+        assert_eq!(v![3., -4., 0.].normalized(), v![0.6, -0.8, 0.0]);
     }
 }

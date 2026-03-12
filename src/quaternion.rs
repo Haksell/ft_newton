@@ -17,7 +17,7 @@ impl Quaternion {
         let half_angle_radians = angle * 0.5;
         let w = half_angle_radians.cos();
         let half_sine = half_angle_radians.sin();
-        let axis = axis.normalize();
+        let axis = axis.normalized();
         let x = axis.x() * half_sine;
         let y = axis.y() * half_sine;
         let z = axis.z() * half_sine;
@@ -41,7 +41,6 @@ impl Quaternion {
         (self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w).sqrt()
     }
 
-    // normalize
     // invert
     // inverse
     // rotate_point
