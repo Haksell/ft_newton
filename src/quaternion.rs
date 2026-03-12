@@ -32,6 +32,22 @@ impl Quaternion {
             w: 1.,
         }
     }
+
+    pub const fn magnitude_squared(&self) -> f32 {
+        self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w
+    }
+
+    pub fn magnitude(&self) -> f32 {
+        (self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w).sqrt()
+    }
+
+    // normalize
+    // invert
+    // inverse
+    // rotate_point
+    // is_valid
+    // rotate_matrix
+    // to_mat3
 }
 
 macro_rules! impl_quaternion_quaternion {
