@@ -5,7 +5,49 @@ edition = "2024"
 
 [dependencies]
 
+[lints.rust]
+# TODO
+
 [lints.clippy]
+cargo = { level = "deny", priority = -1 }
+complexity = { level = "deny", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+perf = { level = "deny", priority = -1 }
+restriction = { level = "warn", priority = -1 }
+style = { level = "warn", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+
+# cargo
+cargo_common_metadata = "allow"
+multiple_crate_versions = "allow"
 
 # correctness
 approx_constant = "allow"
+
+# pedantic
+should_panic_without_expect = "allow"
+
+# restriction
+alloc_instead_of_core = "allow"
+allow_attributes_without_reason = "allow"
+arbitrary_source_item_ordering = "allow"
+arithmetic_side_effects = "allow"
+float_arithmetic = "allow"
+implicit_return = "allow"
+indexing_slicing = "allow"
+min_ident_chars = "allow"
+missing_docs_in_private_items = "allow"
+missing_inline_in_public_items = "allow"
+print_stderr = "allow"
+print_stdout = "allow"
+redundant_test_prefix = "allow"
+shadow_same = "allow"
+shadow_reuse = "allow"
+shadow_unrelated = "allow"
+single_call_fn = "allow"
+std_instead_of_core = "allow"
+
+# suspicious
+blanket_clippy_restriction_lints = "allow"

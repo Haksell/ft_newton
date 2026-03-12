@@ -17,28 +17,37 @@ impl<const N: usize> Vector<N> {
         Self { values }
     }
 
-    pub fn zeros() -> Self {
+    pub const fn zeros() -> Self {
         Self { values: [0.0; N] }
     }
 
-    pub fn ones() -> Self {
+    pub const fn ones() -> Self {
         Self { values: [1.0; N] }
     }
 
-    pub fn full(value: f32) -> Self {
+    pub const fn full(value: f32) -> Self {
         Self { values: [value; N] }
     }
 
+    #[expect(clippy::unused_self)]
     pub const fn len(&self) -> usize {
         N
+    }
+
+    pub fn normalize(&self) -> Self {
+        self / self.magnitude()
+    }
+
+    pub fn magnitude(&self) -> f32 {
+        (self * self).sqrt()
     }
 }
 
 impl<const N: usize> Index<usize> for Vector<N> {
     type Output = f32;
 
-    fn index(&self, i: usize) -> &Self::Output {
-        &self.values[i]
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.values[index]
     }
 }
 
@@ -90,12 +99,31 @@ macro_rules! impl_vector_scalar {
                 }
             }
         }
+
+        impl<const N: usize> std::ops::Div<$field> for $vector {
+            type Output = Vector<N>;
+
+            fn div(self, scalar: $field) -> Self::Output {
+                self * (1.0 / scalar)
+            }
+        }
     };
 }
 
 impl_vector_scalar!(Vector<N>, f32);
 impl_vector_scalar!(&Vector<N>, f32);
 
+impl Vector<3> {
+    pub fn cross(&self, rhs: &Self) -> Self {
+        v![
+            self[1].mul_add(rhs[2], -(self[2] * rhs[1])),
+            self[2].mul_add(rhs[0], -(self[0] * rhs[2])),
+            self[0].mul_add(rhs[1], -(self[1] * rhs[0])),
+        ]
+    }
+}
+
+#[expect(clippy::float_cmp)]
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -163,5 +191,21 @@ mod tests {
         assert_eq!(Vector::<2>::zeros() * Vector::<2>::ones(), 0.);
         assert_eq!(&Vector::<2>::ones() * Vector::<2>::ones(), 2.);
         assert_eq!(&v![-1., 6.] * v![3., 2.], 9.);
+    }
+
+    #[test]
+    fn test_cross() {
+        assert_eq!(v![2., 0., 0.].cross(&v![0., 3., 0.]), v![0., 0., 6.]);
+    }
+
+    #[test]
+    fn test_magnitude() {
+        assert_eq!(Vector::<42>::zeros().magnitude(), 0.);
+        assert_eq!(v![3., -4., 0.].magnitude(), 5.);
+    }
+
+    #[test]
+    fn test_normalize() {
+        assert_eq!(v![3., -4., 0.].normalize(), v![0.6, -0.8, 0.0]);
     }
 }
