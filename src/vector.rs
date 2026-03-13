@@ -5,6 +5,12 @@ pub struct Vector<const N: usize> {
     values: [f32; N],
 }
 
+impl<const N: usize> Default for Vector<N> {
+    fn default() -> Self {
+        Self::zeros()
+    }
+}
+
 #[macro_export]
 macro_rules! v {
     ($($x:expr),+ $(,)?) => {{

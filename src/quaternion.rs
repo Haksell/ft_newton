@@ -8,6 +8,12 @@ pub struct Quaternion {
     w: f32,
 }
 
+impl Default for Quaternion {
+    fn default() -> Self {
+        Self::zero()
+    }
+}
+
 impl Quaternion {
     pub const fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
         Self { x, y, z, w }
