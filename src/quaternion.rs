@@ -38,7 +38,7 @@ impl Quaternion {
     }
 
     pub fn magnitude(&self) -> f32 {
-        (self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w).sqrt()
+        self.magnitude_squared().sqrt()
     }
 
     pub fn normalize(&mut self) {

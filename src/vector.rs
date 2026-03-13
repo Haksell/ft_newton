@@ -42,8 +42,16 @@ impl<const N: usize> Vector<N> {
         self / self.magnitude()
     }
 
+    pub fn dot(&self, rhs: &Self) -> f32 {
+        (0..N).map(|i| self[i] * rhs[i]).sum()
+    }
+
+    pub fn magnitude_squared(&self) -> f32 {
+        self.dot(self)
+    }
+
     pub fn magnitude(&self) -> f32 {
-        (self * self).sqrt()
+        self.magnitude_squared().sqrt()
     }
 }
 
@@ -74,14 +82,6 @@ macro_rules! impl_vector_vector {
                 Vector {
                     values: std::array::from_fn(|i| self.values[i] - rhs.values[i]),
                 }
-            }
-        }
-
-        impl<const N: usize> std::ops::Mul<$rhs> for $lhs {
-            type Output = f32;
-
-            fn mul(self, rhs: $rhs) -> Self::Output {
-                (0..N).map(|i| self[i] * rhs[i]).sum()
             }
         }
     };
@@ -220,9 +220,9 @@ mod tests {
 
     #[test]
     fn test_dot_product() {
-        assert_eq!(Vector::<2>::zeros() * Vector::<2>::ones(), 0.);
-        assert_eq!(&Vector::<2>::ones() * Vector::<2>::ones(), 2.);
-        assert_eq!(&v![-1., 6.] * v![3., 2.], 9.);
+        assert_eq!(Vector::<2>::zeros().dot(&Vector::<2>::ones()), 0.);
+        assert_eq!(Vector::<2>::ones().dot(&Vector::<2>::ones()), 2.);
+        assert_eq!(v![-1., 6.].dot(&v![3., 2.]), 9.);
     }
 
     #[test]
