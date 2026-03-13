@@ -41,4 +41,4 @@
 - [ ] softbody physics
 - [ ] ft_maxwell (electromagnetism)
 - [ ] ft_einstein (relativity)
-- [ ] use rotors instead of quaternions
+- [ ] use rotors instead of quaternions (using `ultraviolet`?)
