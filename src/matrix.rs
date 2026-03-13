@@ -1,4 +1,4 @@
-use std::ops::Index;
+use {crate::vector::Vector, std::ops::Index};
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Matrix<const N: usize> {
@@ -35,9 +35,28 @@ impl<const N: usize> Matrix<N> {
         }
     }
 
+    pub const fn identity() -> Self {
+        let mut mat = Self::zeros();
+        // for loops are not const in stable
+        let mut i = 0;
+        while i < N {
+            mat.values[i][i] = 1.;
+            i += 1;
+        }
+        mat
+    }
+
     #[expect(clippy::unused_self)]
     pub const fn size(&self) -> usize {
         N
+    }
+
+    pub const fn row(&self, y: usize) -> Vector<N> {
+        Vector::new(self.values[y])
+    }
+
+    pub fn col(&self, x: usize) -> Vector<N> {
+        Vector::new(std::array::from_fn(|y| self.values[y][x]))
     }
 }
 

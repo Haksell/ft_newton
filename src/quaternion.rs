@@ -1,4 +1,4 @@
-use crate::vector::Vector;
+use crate::{m, matrix::Matrix, v, vector::Vector};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Quaternion {
@@ -67,10 +67,29 @@ impl Quaternion {
         }
     }
 
-    // rotate_point
-    // is_valid
-    // rotate_matrix
-    // to_mat3
+    pub const fn as_arr3(&self) -> [f32; 3] {
+        [self.x, self.y, self.z]
+    }
+
+    pub const fn as_vec3(&self) -> Vector<3> {
+        v![self.x, self.y, self.z]
+    }
+
+    pub fn rotate_point(&self, rhs: &Vector<3>) -> Vector<3> {
+        let rotated = self * Self::axis_angle(rhs, 0.) * self.inverse();
+        rotated.as_vec3()
+    }
+
+    pub fn rotate_matrix(&self, rhs: &Matrix<3>) -> Matrix<3> {
+        let rotated0 = self * Self::axis_angle(&rhs.row(0), 0.) * self.inverse();
+        let rotated1 = self * Self::axis_angle(&rhs.row(1), 0.) * self.inverse();
+        let rotated2 = self * Self::axis_angle(&rhs.row(2), 0.) * self.inverse();
+        m![rotated0.as_arr3(), rotated1.as_arr3(), rotated2.as_arr3()]
+    }
+
+    pub fn as_mat3(&self) -> Matrix<3> {
+        self.rotate_matrix(&Matrix::identity())
+    }
 }
 
 macro_rules! impl_quaternion_quaternion {
