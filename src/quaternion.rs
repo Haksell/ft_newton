@@ -41,8 +41,32 @@ impl Quaternion {
         (self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w).sqrt()
     }
 
-    // invert
-    // inverse
+    pub fn normalize(&mut self) {
+        *self /= self.magnitude();
+    }
+
+    pub fn normalized(&self) -> Self {
+        self / self.magnitude()
+    }
+
+    pub fn invert(&mut self) {
+        let factor = 1.0 / self.magnitude_squared();
+        self.x *= -factor;
+        self.y *= -factor;
+        self.z *= -factor;
+        self.w *= factor;
+    }
+
+    pub fn inverse(&self) -> Self {
+        let factor = 1.0 / self.magnitude_squared();
+        Self {
+            x: -self.x * factor,
+            y: -self.y * factor,
+            z: -self.z * factor,
+            w: self.w * factor,
+        }
+    }
+
     // rotate_point
     // is_valid
     // rotate_matrix
@@ -76,13 +100,21 @@ macro_rules! impl_quaternion_scalar {
         impl std::ops::Mul<f32> for $quaternion {
             type Output = Quaternion;
 
-            fn mul(self, scalar: f32) -> Self::Output {
+            fn mul(self, rhs: f32) -> Self::Output {
                 Quaternion {
-                    x: self.x * scalar,
-                    y: self.y * scalar,
-                    z: self.z * scalar,
-                    w: self.w * scalar,
+                    x: self.x * rhs,
+                    y: self.y * rhs,
+                    z: self.z * rhs,
+                    w: self.w * rhs,
                 }
+            }
+        }
+
+        impl std::ops::Div<f32> for $quaternion {
+            type Output = Quaternion;
+
+            fn div(self, rhs: f32) -> Self::Output {
+                self * (1.0 / rhs)
             }
         }
     };
@@ -90,6 +122,21 @@ macro_rules! impl_quaternion_scalar {
 
 impl_quaternion_scalar!(Quaternion);
 impl_quaternion_scalar!(&Quaternion);
+
+impl std::ops::MulAssign<f32> for Quaternion {
+    fn mul_assign(&mut self, rhs: f32) {
+        self.x = self.x * rhs;
+        self.y = self.y * rhs;
+        self.z = self.z * rhs;
+        self.w = self.w * rhs;
+    }
+}
+
+impl std::ops::DivAssign<f32> for Quaternion {
+    fn div_assign(&mut self, rhs: f32) {
+        *self *= 1.0 / rhs;
+    }
+}
 
 #[cfg(test)]
 mod tests {

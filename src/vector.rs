@@ -35,10 +35,7 @@ impl<const N: usize> Vector<N> {
     }
 
     pub fn normalize(&mut self) {
-        let inv_mag = 1.0 / self.magnitude();
-        for x in &mut self.values {
-            *x *= inv_mag;
-        }
+        *self /= self.magnitude();
     }
 
     pub fn normalized(&self) -> Self {
@@ -119,6 +116,20 @@ macro_rules! impl_vector_scalar {
 
 impl_vector_scalar!(Vector<N>);
 impl_vector_scalar!(&Vector<N>);
+
+impl<const N: usize> std::ops::MulAssign<f32> for Vector<N> {
+    fn mul_assign(&mut self, rhs: f32) {
+        for x in &mut self.values {
+            *x *= rhs;
+        }
+    }
+}
+
+impl<const N: usize> std::ops::DivAssign<f32> for Vector<N> {
+    fn div_assign(&mut self, rhs: f32) {
+        *self *= 1.0 / rhs;
+    }
+}
 
 impl Vector<3> {
     pub fn cross(&self, rhs: &Self) -> Self {
